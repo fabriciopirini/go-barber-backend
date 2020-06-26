@@ -1,24 +1,23 @@
 import { Router } from 'express';
-import { startOfHour, parseISO, isEqual } from 'date-fns';
+import { startOfHour, parseISO } from 'date-fns';
 
-import Appointment from '../models/Appointment';
+import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
-const routes = Router();
+const appointmentRouter = Router();
+const appointmentsRepository = new AppointmentsRepository();
 
-const appointments: Appointment[] = [];
+appointmentRouter.get('/', (request, response) => {
+  const appointments = appointmentsRepository.all();
 
-routes.get('/', (request, response) => {
   return response.json(appointments);
 });
 
-routes.post('/', (request, response) => {
+appointmentRouter.post('/', (request, response) => {
   const { provider, date } = request.body;
 
   const roundedDate = startOfHour(parseISO(date));
 
-  const isDateBooked = appointments.find(appointment =>
-    isEqual(roundedDate, appointment.date),
-  );
+  const isDateBooked = appointmentsRepository.findByDate(roundedDate);
 
   if (isDateBooked) {
     return response
@@ -26,11 +25,9 @@ routes.post('/', (request, response) => {
       .json({ message: 'This date is already booked' });
   }
 
-  const appointment = new Appointment(provider, roundedDate);
-
-  appointments.push(appointment);
+  const appointment = appointmentsRepository.create(provider, roundedDate);
 
   return response.json(appointment);
 });
 
-export default routes;
+export default appointmentRouter;
