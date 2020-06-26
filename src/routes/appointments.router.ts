@@ -1,16 +1,11 @@
 import { Router } from 'express';
-import { uuid } from 'uuidv4';
 import { startOfHour, parseISO, isEqual } from 'date-fns';
+
+import Appointment from '../models/Appointment';
 
 const routes = Router();
 
-interface IAppointment {
-  id: string;
-  provider: string;
-  date: Date;
-}
-
-const appointments: IAppointment[] = [];
+const appointments: Appointment[] = [];
 
 routes.get('/', (request, response) => {
   return response.json(appointments);
@@ -31,11 +26,7 @@ routes.post('/', (request, response) => {
       .json({ message: 'This date is already booked' });
   }
 
-  const appointment = {
-    id: uuid(),
-    provider,
-    date: roundedDate,
-  };
+  const appointment = new Appointment(provider, roundedDate);
 
   appointments.push(appointment);
 
