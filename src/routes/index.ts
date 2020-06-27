@@ -1,7 +1,7 @@
 // src/routes/index.ts
 import { Router } from 'express';
 
-import appointmentsRouter from './appointments.router';
+import appointmentsRouter from './appointments.routes';
 
 const routes = Router();
 
