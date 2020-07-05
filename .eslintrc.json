@@ -29,6 +29,7 @@
       "error",
       "never"
     ],
+    "camelcase": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
