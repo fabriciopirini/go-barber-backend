@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm'
 
 export default class CreateAppointments1593946281972
   implements MigrationInterface {
@@ -12,6 +12,7 @@ export default class CreateAppointments1593946281972
             type: 'varchar',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'provider',
@@ -25,10 +26,10 @@ export default class CreateAppointments1593946281972
           },
         ],
       }),
-    );
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('appointments');
+    await queryRunner.dropTable('appointments')
   }
 }
