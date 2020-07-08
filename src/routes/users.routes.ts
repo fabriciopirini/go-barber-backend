@@ -1,12 +1,12 @@
 import { Router } from 'express'
 import multer from 'multer'
 
+import uploadConfig from '../config/upload'
+
 import CreateUserService from '../services/CreateUserService'
 import UpdateUserAvatarService from '../services/UpdateUserAvatarService'
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'
-
-import uploadConfig from '../config/upload'
 
 const usersRouter = Router()
 const upload = multer(uploadConfig)
@@ -27,7 +27,7 @@ usersRouter.post('/', async (request, response) => {
 
     return response.json(user)
   } catch (error) {
-    return response.status(400).json({ message: error.message })
+    return response.status(error.statusCode).json({ message: error.message })
   }
 })
 
@@ -48,7 +48,7 @@ usersRouter.patch(
 
       return response.json(user)
     } catch (error) {
-      return response.status(400).json({ message: error.message })
+      return response.status(error.statusCode).json({ message: error.message })
     }
   },
 )
